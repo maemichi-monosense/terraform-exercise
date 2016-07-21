@@ -8,3 +8,6 @@
 
 # Module directory
 .terraform/
+
+# Vars
+terraform.tfvars
