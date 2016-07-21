@@ -1,9 +1,3 @@
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
-variable "region" {
-  default = "ap-northeast-1"
-}
-
 provider "aws" {
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
@@ -22,19 +16,6 @@ resource "aws_vpc" "main" {
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.main.id}"
-}
-
-variable "n-public" {
-  default = 0x0
-}
-variable "n-private" {
-  default = 0x80
-}
-variable "n-a" {
-  default = 0x0
-}
-variable "n-c" {
-  default = 0x40
 }
 
 resource "aws_subnet" "public-a" {
@@ -149,10 +130,6 @@ resource "aws_security_group" "admin" {
   }
 }
 
-variable "ami_id" {
-  default = "ami-b80b6db8" // CentOS 7 x86_64 (2014_09_29) EBS
-}
-
 resource "aws_instance" "bastion" {
   ami = "${var.ami_id}"
   instance_type = "t2.micro"
@@ -198,8 +175,4 @@ resource "aws_instance" "server" {
     hostname: "server"
     timezone: "Asia/Tokyo"
 EOS
-}
-
-output "public ip of bastion" {
-  value = "${aws_instance.bastion.public_ip}"
 }
