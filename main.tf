@@ -158,8 +158,8 @@ resource "aws_instance" "bastion" {
   instance_type = "t2.micro"
   key_name = "terraform.monosense"
   vpc_security_group_ids = [
-    "${aws_security_group.main.id}"
-    , "${aws_security_group.admin.id}"
+    "${aws_security_group.main.id}",
+    "${aws_security_group.admin.id}",
   ]
   subnet_id = "${aws_subnet.public-a.id}"
   associate_public_ip_address = true
@@ -182,7 +182,7 @@ resource "aws_instance" "server" {
   instance_type = "t2.micro"
   key_name = "terraform.monosense"
   vpc_security_group_ids = [
-    "${aws_security_group.main.id}"
+    "${aws_security_group.main.id}",
   ]
   subnet_id = "${aws_subnet.private-a.id}"
   associate_public_ip_address = false
