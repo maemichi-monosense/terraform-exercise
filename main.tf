@@ -110,3 +110,21 @@ resource "aws_route_table_association" "private-c" {
   subnet_id = "${aws_subnet.private-c.id}"
   route_table_id = "${aws_route_table.private-route.id}"
 }
+
+resource "aws_security_group" "admin" {
+  name = "terraform-admin"
+  description = "Allow SSH inbound traffic"
+  vpc_id = "${aws_vpc.main.id}"
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
