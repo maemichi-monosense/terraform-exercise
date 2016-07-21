@@ -19,6 +19,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_subnet" "public-a" {
+  tags { Name = "terraform-public-a" }
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.1.${var.n-public + var.n-a}.0/20"
   availability_zone = "${var.region}a"
@@ -27,6 +28,7 @@ resource "aws_subnet" "public-a" {
 }
 
 resource "aws_subnet" "public-c" {
+  tags { Name = "terraform-public-c" }
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.1.${var.n-public + var.n-c}.0/20"
   availability_zone = "${var.region}c"
@@ -35,12 +37,14 @@ resource "aws_subnet" "public-c" {
 }
 
 resource "aws_subnet" "private-a" {
+  tags { Name = "terraform-private-a" }
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.1.${var.n-private + var.n-a}.0/20"
   availability_zone = "${var.region}a"
 }
 
 resource "aws_subnet" "private-c" {
+  tags { Name = "terraform-private-c" }
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.1.${var.n-private + var.n-c}.0/20"
   availability_zone = "${var.region}c"
@@ -57,6 +61,7 @@ resource "aws_nat_gateway" "ngw" {
 }
 
 resource "aws_route_table" "public-route" {
+  tags { Name = "terraform-public-route" }
   vpc_id = "${aws_vpc.main.id}"
   route {
     cidr_block = "0.0.0.0/0"
@@ -65,6 +70,7 @@ resource "aws_route_table" "public-route" {
 }
 
 resource "aws_route_table" "private-route" {
+  tags { Name = "terraform-private-route" }
   vpc_id = "${aws_vpc.main.id}"
   route {
     cidr_block = "0.0.0.0/0"
