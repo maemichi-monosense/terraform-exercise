@@ -41,12 +41,16 @@ resource "aws_subnet" "public-a" {
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.1.${var.n-public + var.n-a}.0/20"
   availability_zone = "${var.region}a"
+
+  map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "public-c" {
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.1.${var.n-public + var.n-c}.0/20"
   availability_zone = "${var.region}c"
+
+  map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "private-a" {
