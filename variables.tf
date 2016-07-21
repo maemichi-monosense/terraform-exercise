@@ -16,5 +16,6 @@ variable "n-c" {
   default = 0x40
 }
 variable "ami_id" {
-  default = "ami-b80b6db8" // CentOS 7 x86_64 (2014_09_29) EBS
+  # Amazon Linux AMI 2016.03.3 (HVM), SSD Volume Type
+  default = "ami-374db956"
 }
