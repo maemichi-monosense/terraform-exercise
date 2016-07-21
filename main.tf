@@ -148,3 +148,58 @@ resource "aws_security_group" "admin" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+variable "ami_id" {
+  default = "ami-b80b6db8" // CentOS 7 x86_64 (2014_09_29) EBS
+}
+
+resource "aws_instance" "bastion" {
+  ami = "${var.ami_id}"
+  instance_type = "t2.micro"
+  key_name = "terraform.monosense"
+  vpc_security_group_ids = [
+    "${aws_security_group.main.id}"
+    , "${aws_security_group.admin.id}"
+  ]
+  subnet_id = "${aws_subnet.public-a.id}"
+  associate_public_ip_address = true
+  root_block_device = {
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+  tags {
+    Name = "terraform-bastion"
+  }
+  user_data = <<EOS
+    #cloud-config
+    hostname: "bastion"
+    timezone: "Asia/Tokyo"
+EOS
+}
+
+resource "aws_instance" "server" {
+  ami = "${var.ami_id}"
+  instance_type = "t2.micro"
+  key_name = "terraform.monosense"
+  vpc_security_group_ids = [
+    "${aws_security_group.main.id}"
+  ]
+  subnet_id = "${aws_subnet.private-a.id}"
+  associate_public_ip_address = false
+  root_block_device = {
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+  tags {
+    Name = "terraform-server"
+  }
+  user_data = <<EOS
+    #cloud-config
+    hostname: "server"
+    timezone: "Asia/Tokyo"
+EOS
+}
+
+output "public ip of bastion" {
+  value = "${aws_instance.bastion.public_ip}"
+}
